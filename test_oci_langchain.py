@@ -13,7 +13,6 @@ logger = logging.getLogger(__name__)
 logger.setLevel(os.getenv("APP_LOGLEVEL", "INFO"))
 
 
-
 chat = ChatOCIGenAI(
     auth_type="API_KEY",
     auth_profile=os.getenv("OCI_PROFILE"),
@@ -24,10 +23,10 @@ chat = ChatOCIGenAI(
 )
 
 messages = [  
-SystemMessage(content="your are an AI assistant."),  
-AIMessage(content="Hi there human!"),  
-HumanMessage(content="tell me a joke."),  
-]  
+    SystemMessage(content="your are an AI assistant."),  
+    AIMessage(content="Hi there human!"),  
+    HumanMessage(content="tell me a joke."),  
+    ]  
 
 response = chat.invoke(messages, temperature=0.7, max_tokens=500)
 
