@@ -2,6 +2,9 @@ python-dotenv
 langgraph
 langchain
 langchain-openai
+# PENDING: langchain-oracle not in PyPI yet
+aiohttp
+# langchain-oracle
 # langchain-community
 oci
 
