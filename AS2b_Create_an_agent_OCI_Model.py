@@ -58,4 +58,5 @@ response = agent.invoke(
     {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
 )
 
-print(response)
+# Print last message as response
+print(response["messages"][-1].content)
