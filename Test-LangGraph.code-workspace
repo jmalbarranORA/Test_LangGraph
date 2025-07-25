@@ -27,5 +27,17 @@
 				]
 			},
 		]
+	},
+	"settings": {
+		"python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+		"terminal.integrated.env.linux": {
+			"PYTHONPATH": "${workspaceFolder}/../langchain-oracle/libs/oci"
+		},
+		"terminal.integrated.env.windows": {
+			"PYTHONPATH": "${workspaceFolder}/../langchain-oracle/libs/oci"
+		},
+		"terminal.integrated.env.osx": {
+			"PYTHONPATH": "${workspaceFolder}/../langchain-oracle/libs/oci"
+		},
 	}
 }

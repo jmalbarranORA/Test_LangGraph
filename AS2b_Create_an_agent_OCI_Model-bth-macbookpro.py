@@ -66,7 +66,10 @@ agent = create_react_agent(
 # Run the agent
 response = agent.invoke({"messages": messages})
 
-log_response(response, logging.DEBUG)
+
+
+
+log_response(response)
 
 # Print last message as response
 print(response["messages"][-1].content)
