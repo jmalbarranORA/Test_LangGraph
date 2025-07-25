@@ -2,7 +2,8 @@ import os
 import logging
 from dotenv import load_dotenv
 
-from langchain_community.chat_models.oci_generative_ai import ChatOCIGenAI
+# from langchain_community.chat_models.oci_generative_ai import ChatOCIGenAI
+from langchain_oci.chat_models.oci_generative_ai import ChatOCIGenAI
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, AnyMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.prompts import ChatPromptTemplate
