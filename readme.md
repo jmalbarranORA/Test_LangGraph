@@ -14,14 +14,90 @@
 
 
 # LangGraph tutorial
-## Links
-### LangChain/LangGraph
+## Quick Start
+### 1. Install dependencies
+
+```
+pip install langgraph "langgraph[openai]"
+```
+
+Note: Changed Anthropic to openai
+
+### 2. Create an agent
+
+- Create a simple agent (Weather)
+- Change model to `openai:openai:o4-mini`
+
+### 3. Configure an LLM
+
+a) Use `os.getenv("OPENAI_MODEL_ID")` from `openai:openai:o4-mini`  
+    
+```python
+from langchain.chat_models import init_chat_model
+```
+
+b) Use `os.getenv("OCI_GENAI_MODEL_ID")` from langchain_oci ("cohere.command-latest")
+
+### 4. Add a custom prompt
+#### 1. Static prompt
+
+Added a prompt to reject answers about the weather
+
+a) Use `os.getenv("OPENAI_MODEL_ID")` from `openai:openai:o4-mini`  
+
+b) Use `os.getenv("OCI_GENAI_MODEL_ID")` from langchain_oci ("cohere.command-latest")
+
+#### 2. Dynamic prompt
+
+Add agent state and configuration dynamically (User Name)
+
+a) Use `os.getenv("OPENAI_MODEL_ID")` from `openai:openai:o4-mini`  
+
+b) Use `os.getenv("OCI_GENAI_MODEL_ID")` from langchain_oci ("cohere.command-latest")
+
+### 5. Add memory
+
+Add memory using checkpoint
+
+```python
+checkpointer = InMemorySaver()
+
+
+agent = create_react_agent(
+    model=chat,
+    tools=[get_weather],  
+    # prompt=prompt, # type: ignore
+    checkpointer=checkpointer
+)
+```
+
+a) Use `os.getenv("OPENAI_MODEL_ID")` from `openai:openai:o4-mini`  
+
+b) Use `os.getenv("OCI_GENAI_MODEL_ID")` from langchain_oci ("cohere.command-latest")   
+
+PENDING: Bug open
+
+
+### 6. Configure structured output
+
+Use schema in Pydantic or TypeDict
+Add `response_format` in create agent
+Get structured output with `response["structured_response"]`
+
+
+a) Use `os.getenv("OPENAI_MODEL_ID")` from `openai:openai:o4-mini`  
+
+b) Use `os.getenv("OCI_GENAI_MODEL_ID")` from langchain_oci ("cohere.command-latest")   
+
+
+# Links
+## LangChain/LangGraph
 - [LangChain:Oracle Cloud Infrastructure Generative AI](https://python.langchain.com/docs/integrations/llms/oci_generative_ai/#oracle-cloud-infrastructure-generative-ai)
 - [LangChain Providers: Oracle Cloud Infrastructure (OCI)](https://python.langchain.com/docs/integrations/providers/oci/)
     - [Class: ChatOCIModelDeployment](https://python.langchain.com/api_reference/community/chat_models/langchain_community.chat_models.oci_data_science.ChatOCIModelDeployment.html#chatocimodeldeployment)
 - [LangGraph](https://langchain-ai.github.io/langgraph/)
 - [LangGraph quickstart](https://langchain-ai.github.io/langgraph/agents/agents/)
-### OCI
+## OCI
 - [Generative AI Service Inference API - Endpoints](https://docs.oracle.com/en-us/iaas/api/#/en/generative-ai-inference/20231130/)
 - [Generative AI Service Management API - Endpoints](https://docs.oracle.com/en-us/iaas/api/#/en/generative-ai/20231130/)
 - [GenerateText](https://docs.oracle.com/iaas/api/#/en/generative-ai-inference/20231130/GenerateTextResult/GenerateText)
