@@ -81,6 +81,7 @@ PENDING: Bug open
 ### 6. Configure structured output
 
 Use schema in Pydantic or TypeDict
+Add class WeatherResponse(BaseModel):
 Add `response_format` in create agent
 Get structured output with `response["structured_response"]`
 
@@ -88,6 +89,9 @@ Get structured output with `response["structured_response"]`
 a) Use `os.getenv("OPENAI_MODEL_ID")` from `openai:openai:o4-mini`  
 
 b) Use `os.getenv("OCI_GENAI_MODEL_ID")` from langchain_oci ("cohere.command-latest")   
+
+- Removed memory from agent, so I can test (meanwhile bug is removed)
+- New bug: https://github.com/oracle/langchain-oracle/issues/5
 
 
 # Links
