@@ -1,9 +1,10 @@
-from typing import TypedDict, List, Optional, Union
+from typing import TypedDict, List, Optional, Union, Any
 import os
 import logging
 from dotenv import load_dotenv
 
-from langchain_community.chat_models.oci_generative_ai import ChatOCIGenAI
+# from langchain_community.chat_models.oci_generative_ai import ChatOCIGenAI
+from langchain_oci.chat_models.oci_generative_ai import ChatOCIGenAI
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, AnyMessage, BaseMessage
 from langchain_core.runnables import RunnableConfig
 from langchain_core.prompts import ChatPromptTemplate
@@ -58,24 +59,6 @@ def prompt(state: AgentState, config: RunnableConfig) -> list[AnyMessage]:
     system_msg = f"Address the user as {user_name}."
     return [SystemMessage(content=system_msg)] + state["messages"] # type: ignore
 
-def messages_as_serializable(messages):
-    return [
-        m.model_dump() if isinstance(m, BaseMessage) else m
-        for m in messages
-    ]
-def agent_output_serializable(output):
-    if isinstance(output, BaseMessage):
-        return output.model_dump()
-    elif isinstance(output, dict):
-        return {
-            k: messages_as_serializable(v) if isinstance(v, list) else v
-            for k, v in output.items()
-        }
-    return output
-
-
-
-
 # endregion: LangGraph components
 
 # region: Agent tools
@@ -117,36 +100,14 @@ config: RunnableConfig = {"configurable":
 checkpointer = InMemorySaver()
 
 
-
 agent = create_react_agent(
-    model=chat,  
+    # model="openai:o4-mini",  
+    model=chat,
     tools=[get_weather],  
     # prompt=prompt, # type: ignore
+    checkpointer=checkpointer
 
 )
-
-def agent_node(state: dict) -> dict:
-    """LangGraph node that wraps the agent and returns msgpack-safe data."""
-    messages = state["messages"]
-
-    # Ensure input is in dict format if not already
-    input_messages = messages_as_serializable(messages)
-
-    result = agent.invoke({"messages": input_messages})  # this is your ReAct agent
-
-    # You must ensure all returned messages are also serializable
-    output = {
-        "messages": messages_as_serializable(result.get("messages", []))
-    }
-
-    return output
-
-builder = StateGraph(SimpleStateGraph)
-
-builder.add_node("agent", agent_node)
-builder.set_entry_point("agent")
-
-graph = builder.compile(checkpointer=checkpointer)
 
 sf_messages = [  
     # SystemMessage(content="your are an AI assistant."),  
@@ -154,9 +115,8 @@ sf_messages = [
     HumanMessage(content="What is the weather in sf?"),  
     ] 
 
-
 # Run the agent
-sf_response = graph.invoke({"messages": sf_messages}, config=config)
+sf_response = agent.invoke({"messages": sf_messages}, config=config) # type: ignore
 
 log_response(sf_response, logging.DEBUG)
 
